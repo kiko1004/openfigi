@@ -46,6 +46,12 @@ namespace FigiApiCsharpExample
                         System.Console.Write("Enter ISIN value: ");
                         value = Console.ReadLine();
                         Request(identifier, value);
+                        break;
+                    case "3":
+                        identifier = "TRADING_SYSTEM_IDENTIFIER";
+                        System.Console.Write("Enter value: ");
+                        value = Console.ReadLine();
+                        Request(identifier, value);
 
 
 
@@ -103,8 +109,8 @@ namespace FigiApiCsharpExample
                 if (dataInstrument.Data != null && dataInstrument.Data.Any())
                     foreach (var instrument in dataInstrument.Data)
                     {
-                        Console.WriteLine(instrument.figi + " " + instrument.Name + " " + instrument.SecurityDescription + " " + instrument.SecurityType + " " + instrument.TickerComplete + " " + instrument.Ticker);
-                        sb.AppendLine(instrument.figi + " " + instrument.Name + " " + instrument.SecurityDescription + " " + instrument.SecurityType + " " + instrument.TickerComplete + " " + instrument.Ticker);
+                        Console.WriteLine(instrument.figi + ",  " + instrument.Name + ", " + instrument.exchCode + ", " + instrument.SecurityType + ", " + instrument.TickerComplete + ", " + instrument.Ticker + " " + instrument.MarketSector);
+                        sb.AppendLine(instrument.figi + ",  " + instrument.Name + ", " + instrument.exchCode + ", " + instrument.SecurityType + ", " + instrument.TickerComplete + ", " + instrument.Ticker + " " + instrument.MarketSector);
                     }
 
 
@@ -140,6 +146,7 @@ namespace FigiApiCsharpExample
             System.Console.WriteLine("Type of identifier you are going to search:");
             System.Console.WriteLine("1. Ticker");
             System.Console.WriteLine("2. ISIN");
+            
             System.Console.WriteLine("0. Exit");
             System.Console.Write("Enter command: ");
 
