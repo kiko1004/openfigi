@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Console = Colorful.Console;
 
@@ -11,7 +12,15 @@ namespace FigiApiCsharpExample
 {
     class Program
     {
-        
+        [DllImport("user32.dll")]
+        internal static extern bool OpenClipboard(IntPtr hWndNewOwner);
+
+        [DllImport("user32.dll")]
+        internal static extern bool CloseClipboard();
+
+        [DllImport("user32.dll")]
+        internal static extern bool SetClipboardData(uint uFormat, IntPtr data);
+        [STAThread]
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Get BB ID, by Kiril Spiridonov", Color.LightGreen);
@@ -102,8 +111,18 @@ namespace FigiApiCsharpExample
             
                             
             Console.WriteLine("------------------------------------------------------------", Color.Orange);
-          //  System.Console.WriteLine("Where would you like to save the data?");
-          
+            //  System.Console.WriteLine("Where would you like to save the data?");
+            try
+            {
+                Copy2Clipboard(sb.ToString());
+                Console.WriteLine("Data copied to clipboard. Press CTR+V to paste anywhere.", Color.Green);
+
+            }
+            catch (Exception)
+            {
+
+                System.Console.WriteLine("Data did not successfully copied to clipboard.");
+            }
             
 
            
@@ -123,6 +142,17 @@ namespace FigiApiCsharpExample
             System.Console.WriteLine("2. ISIN");
             System.Console.WriteLine("0. Exit");
             System.Console.Write("Enter command: ");
+
+        }
+
+        static void Copy2Clipboard(string data)
+        {
+            OpenClipboard(IntPtr.Zero);
+            var yourString = data;
+            var ptr = Marshal.StringToHGlobalUni(yourString);
+            SetClipboardData(13, ptr);
+            CloseClipboard();
+            Marshal.FreeHGlobal(ptr);
 
         }
 
